@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- 
+        Creacion de un Menu (Menu Padre)
+
+        Parametros: 
+            - id        -> ID identificativo
+            - name      -> Nombre que aparecera en el Menu de Odoo
+            - parent    -> El menu creado con este parametro hara relacion con el menu principal, para que este se pueda visualizar al momento de hacer click en el menu padre 'Peliculas'
+            - action    -> Permite 
+    -->
+    <menuitem
+        id="menu_principal"
+        name="Peliculas"
+    />
+    <!-- 
+        Creacion de un Submenu (Menu Hijo)
+    -->
+    <menuitem
+        id="menu_horizontal"
+        name="Mis Modelos"
+        parent="menu_principal"
+    />
+    <!-- 
+        Creacion de un Sub-Submenu (Menu Hijo del Hijo)
+    -->
+    <menuitem
+        id="menu_vertical_presupuesto"
+        name="Presupyesto"
+        parent="menu_horizontal"
+
+    />
+
+</odoo>
