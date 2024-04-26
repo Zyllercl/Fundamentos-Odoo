@@ -6,7 +6,9 @@
     # Version del Modulo
     'version': '1.0',
     # Dependencias: Permite al modulo ser creado
-    'depends': ['base'],
+    'depends': [
+        'contacts',
+    ],
     # Autor del Modulo
     'author': 'Martin Urisman',
     # Categorias a utilizar de Odoo
@@ -20,5 +22,8 @@
         Modulo para hacer presupuesto de peliculas
     ''',
     # Data: archivos '.XML' y '.CSV' que se crean dentro del modelo
-    'data': [],
+    'data': [
+        'views/menu.xml',
+        'views/presupuesto_views.xml',
+    ],
 }

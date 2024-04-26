@@ -2,34 +2,39 @@
 <odoo>
 
     <!-- 
+        Creacion de la Accion 
+        
+        Etiqueta <record> permite 'insertar' datos en la base de datos
+        
+        Parametros:
+            - id    -> ID identificativo
+            - model -> Modelo de la base de datos a la cual se hace referencia
+        
+        Etiqueta <field>
+            - name = "name"         -> Label que se mostrara en pantalla (Titulo) 
+            - name = "res_model"    -> Referencia al modelo que se va a utilizar 
+            - name = "vie_model"    -> Tipo de vista: Lista (Tree) y Formulario (Form)
+    -->
+    <record id="action_open_presupuesto" model="ir.actions.act_window">
+        <field name="name">Presupuesto</field>
+        <field name="res_model">presupuesto</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- 
         Creacion de un Menu (Menu Padre)
 
         Parametros: 
             - id        -> ID identificativo
             - name      -> Nombre que aparecera en el Menu de Odoo
-            - parent    -> El menu creado con este parametro hara relacion con el menu principal, para que este se pueda visualizar al momento de hacer click en el menu padre 'Peliculas'
-            - action    -> Permite 
+            - parent    -> El menu creado con este parametro hara relacion con el menu {nombre_menu}, para que este se pueda visualizar al momento de hacer click en el menu {menu_seleccionado}
+            - action    -> Permite realizar acciones en el modelo de datos, para ello se debe definir antes de crear el menu
     -->
-    <menuitem
-        id="menu_principal"
-        name="Peliculas"
-    />
-    <!-- 
-        Creacion de un Submenu (Menu Hijo)
-    -->
-    <menuitem
-        id="menu_horizontal"
-        name="Mis Modelos"
-        parent="menu_principal"
-    />
-    <!-- 
-        Creacion de un Sub-Submenu (Menu Hijo del Hijo)
-    -->
-    <menuitem
-        id="menu_vertical_presupuesto"
-        name="Presupyesto"
-        parent="menu_horizontal"
-
-    />
+    <menuitem id="menu_principal" name="Peliculas"/>
+    <!-- Creacion de un Submenu (Menu Hijo) -->
+    <menuitem id="menu_horizontal" name="Mis Modelos" parent="menu_principal"/>
+    <!-- Creacion de un Sub-Submenu (Menu Hijo del Hijo) -->
+    <menuitem id="menu_vertical_presupuesto" name="Presupuesto" parent="menu_horizontal" action="action_open_presupuesto"/>
 
 </odoo>

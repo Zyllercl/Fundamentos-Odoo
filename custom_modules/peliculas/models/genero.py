@@ -1,0 +1,12 @@
+# -*- coding:utf-8 -*-
+
+from odoo import fields, models, api
+
+class Genero(models.Model):
+
+    _name = "genero" # Nombre de la tabla en la db
+
+    name = fields.Char() # Nombre nuevo registro
+
+
+
