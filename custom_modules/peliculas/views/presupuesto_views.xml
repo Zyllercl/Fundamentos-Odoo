@@ -16,8 +16,22 @@
         <field name="name">Vista Formulario Presupuesto de Peliculas</field>
         <field name="model">presupuesto</field>
         <field name="arch" type="xml">
+
             <!-- Vista del Formulario personalizado -->
             <form>
+                <!-- Barra de Estados -->
+                <header>
+                    <!-- 
+                        Etiqueta Button
+                            - Parametro:
+                                - type: Si se desea llamar a una funcion en python se debe ocupar 'object'
+                                        Si se desea llamar a una accion en XML se debe ocupar 'action'
+                     -->
+                    <button string="Aprobar" type="object" name="aprobar_presupuesto" class="oe_highlight" states="Borrador"/>
+                    <button string="Cancelar" type="object" name="cancelar_presupuesto" states="Borrador,Aprobado"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="Borrador,Aprobado"/>
+                </header>
                 <!-- Efecto de tarjeta -->
                 <sheet>
                     <!-- 
@@ -29,21 +43,61 @@
                     <widget name="web_ribbon" title="Archivado" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
 
                     <!-- Campo de imagen -->
-                    <field name="image_1920" widget="image" class="oe_avatar" 
-                        options="{'preview_image': 'image_128', 'size': ['',128]}"/>
+                    <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'image_128', 'size': ['',128]}"/>
+
+                    <!-- Titulo pelicula + Puntuacion -->
+                    <div class="oe_title">
+                        <div class="o_row">
+                            <field name="active" invisible="1"/> 
+                            <h1 style="display: flex;">
+                                <field name="name" placeholder="Nombre pelicula" required="1" default_focus="1" class="oe_inline"/>
+                            </h1>
+
+                            <field name="puntuacion" widget="percentpie" string=" " style="padding-left: 25px;" />
+                            <field name="puntuacion_change" placeholder="Puntuación" class="oe_edit_only oe_inline"/>
+                        </div>
+                    </div>
+                    
+                    <!-- Clasificacion + Fecha estreno -->
+                    <div class="o_row" style="display: flex;">
+                        <span class="fa fa-registered" style="font-size: 10px; padding: 5px 5px;"/>
+                        <field name="clasificacion" required="1"/>
+                        <span class="fa fa-calendar" attrs="{'invisible': [('clasificacion', '=', False), ('fecha_estreno', '=', False)]}" style="font-size: 10px; padding: 5px 5px;"/>
+                        <field name="fecha_estreno"/>
+                    </div>
+
+                    <!-- Generos en formato Tags -->
+                    <div class="o_row">
+                        <field name="genero_ids" widget="many2many_tags" style="display: flex;"/>
+                    </div>
 
 
-                    <group>
-                        <!-- Columna izquierda -->
+                    <!-- Seccion de datos principales -->
+                    <group string="Datos Principales">
+                        <field name="vista_general" placeholder="Descripcion pelicula" attrs="{'readonly': [('state', '!=', 'Borrador')]}"/>
+                        <!-- Campos lado izquierdo -->
                         <group>
-                            <field name="name"/>
-                            <field name="clasificacion"/>
+                            <!-- 
+                                Atributos 
+                                    domain: se puede representar como un filtro
+                                    options: 
+                                        - no_create: No permite crear una nueva categoria
+                                        - no_open: No permite modificar una categoria
+                            -->
+                            <field name="director_id" 
+                                domain="[('category_id', 'in', [categoria_director_id])]"
+                                options="{'no_create': True, 'no_open': True}"
+                            />
+                            <field name="categoria_director_id" invisible="1"/>
+                            <field name="link_trailer" widget="url"/>
+                            <field name="fecha_aprobado" readonly="1"/>
                         </group>
-                        <!-- Columna derecha -->
+                        <!-- Campos lado derecho -->
                         <group>
-                            <field name="puntuacion"/>
-                            <!-- Campo invisible -->
-                            <field name="active" invisible="1"/>
+                            <field name="es_libro" widget="boolean_toggle"/>
+                            <!-- La variable libro sera invisible siempre y cuando es_libro es True (esta check) -->                            
+                            <field name="libro" filename="libro_filename" attrs="{'invisible': [('es_libro', '=', False)]}"/>
+                            <field name="libro_filename" invisible="1"/>
                         </group>
                     </group>
                 </sheet>
@@ -52,3 +106,26 @@
     </record>
 
 </odoo>
+
+
+<!-- 
+    EJEMPLO FORMULARIO POR DEFAULT
+<form>
+    <sheet>
+        <group>
+            Columna izquierda
+        <group>
+            <field name="name"/>
+            <field name="clasificacion"/>
+        </group>
+        
+            Columna derecha
+        <group>
+            <field name="puntuacion"/>
+            Campo invisible
+            <field name="active" invisible="1"/>
+        </group>
+        </group> 
+    </sheet>
+</form> 
+-->
